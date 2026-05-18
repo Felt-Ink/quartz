@@ -1,0 +1,30 @@
+backend:
+  name: github
+  repo: Felt-Ink/{{FAMILY_NAME}}
+  branch: main
+
+media_folder: "content/images"
+public_folder: "/images"
+
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Description", name: "description", widget: "string", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "passphrase"
+        label: "Site Passphrase"
+        file: "passphrase.yml"
+        fields:
+          - {label: "Passphrase", name: "passphrase", widget: "string"}
+          - {label: "Hint", name: "hint", widget: "string"}
