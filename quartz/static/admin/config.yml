@@ -2,10 +2,11 @@ backend:
   name: github
   repo: Felt-Ink/{{FAMILY_NAME}}
   branch: main
+  base_url: https://lively-wood-a586.varun.workers.dev
+  auth_endpoint: auth
 
 media_folder: "content/images"
 public_folder: "/images"
-
 collections:
   - name: "posts"
     label: "Blog Posts"
@@ -18,7 +19,6 @@ collections:
       - {label: "Description", name: "description", widget: "string", required: false}
       - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Body", name: "body", widget: "markdown"}
-
   - name: "settings"
     label: "Settings"
     files:
