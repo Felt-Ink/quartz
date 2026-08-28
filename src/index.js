@@ -8,9 +8,24 @@ export default {
     if (env.BASIC_AUTH_PASSWORD && !isAuthorized(request, env)) {
       return unauthorized();
     }
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    return withNoStore(response);
   },
 };
+
+// Cloudflare's edge cache sits in front of this Worker and will happily
+// serve a cached response to unauthenticated requests without ever
+// invoking fetch() again. Forcing no-store keeps every gated response
+// (or an ungated one, if the family later removes their passphrase) live.
+function withNoStore(response) {
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "private, no-store");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
 
 function isAuthorized(request, env) {
   const header = request.headers.get("Authorization") || "";
