@@ -20,7 +20,7 @@ export default {
       return handleLogin(request, passphrase);
     }
 
-    if (isAuthorized(request, passphrase)) {
+    if (await isAuthorized(request, passphrase)) {
       return withNoStore(await env.ASSETS.fetch(request));
     }
 
@@ -42,10 +42,10 @@ function withNoStore(response) {
   });
 }
 
-function isAuthorized(request, passphrase) {
+async function isAuthorized(request, passphrase) {
   const cookie = request.headers.get("Cookie") || "";
   const match = cookie.match(new RegExp(`(?:^|; )${COOKIE_NAME}=([^;]*)`));
-  return match != null && decodeURIComponent(match[1]) === passphrase;
+  return match != null && match[1] === (await sessionToken(passphrase));
 }
 
 async function handleLogin(request, passphrase) {
@@ -60,9 +60,20 @@ async function handleLogin(request, passphrase) {
   const headers = new Headers({ Location: redirectTo });
   headers.append(
     "Set-Cookie",
-    `${COOKIE_NAME}=${encodeURIComponent(submitted)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
+    `${COOKIE_NAME}=${await sessionToken(submitted)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
   );
   return new Response(null, { status: 302, headers });
+}
+
+// A hash of the passphrase, not the passphrase itself, is what lives in
+// the browser's cookie jar — so a leaked cookie doesn't hand over the
+// family's actual shared secret, just a token that's only useful here.
+async function sessionToken(passphrase) {
+  const data = new TextEncoder().encode(`${COOKIE_NAME}:${passphrase}`);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 // Only allow redirecting back to a same-site path, never to an
