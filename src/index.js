@@ -8,13 +8,22 @@ const COOKIE_NAME = "felt_auth";
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+
+    // Cloudflare's own _redirects file processing only applies when the
+    // platform serves assets automatically; run_worker_first sends every
+    // request through this Worker first, and our manual env.ASSETS.fetch()
+    // below bypasses that processing entirely. So /admin is handled here
+    // instead of relying on quartz/static/_redirects.
+    if (url.pathname === "/admin" || url.pathname === "/admin/") {
+      return Response.redirect(new URL("/static/admin/", url), 301);
+    }
+
     const passphrase = env.SITE_PASSPHRASE;
 
     if (!passphrase) {
       return withNoStore(await env.ASSETS.fetch(request));
     }
-
-    const url = new URL(request.url);
 
     if (request.method === "POST" && url.pathname === "/__auth") {
       return handleLogin(request, passphrase);
