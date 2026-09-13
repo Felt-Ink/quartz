@@ -56,8 +56,15 @@ export type Analytics =
       host?: string
     }
 
+export type PageTitleOption = string | { type: "image"; src: string; alt: string }
+
+/** Resolves a page title setting down to plain text, for contexts (meta tags, RSS, font subsetting) that can't render an image */
+export function pageTitleText(pageTitle: PageTitleOption): string {
+  return typeof pageTitle === "string" ? pageTitle : pageTitle.alt
+}
+
 export interface GlobalConfiguration {
-  pageTitle: string
+  pageTitle: PageTitleOption
   pageTitleSuffix?: string
   /** Whether to enable single-page-app style rendering. this prevents flashes of unstyled content and improves smoothness of Quartz */
   enableSPA: boolean

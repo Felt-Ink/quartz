@@ -1,5 +1,5 @@
 import { Root } from "hast"
-import { GlobalConfiguration } from "../../cfg"
+import { GlobalConfiguration, pageTitleText } from "../../cfg"
 import { getDate } from "../../components/Date"
 import { escapeHTML } from "../../util/escape"
 import { FilePath, FullSlug, SimpleSlug, joinSegments, simplifySlug } from "../../util/path"
@@ -81,10 +81,10 @@ function generateRSSFeed(cfg: GlobalConfiguration, idx: ContentIndexMap, limit?:
   return `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
     <channel>
-      <title>${escapeHTML(cfg.pageTitle)}</title>
+      <title>${escapeHTML(pageTitleText(cfg.pageTitle))}</title>
       <link>https://${base}</link>
       <description>${!!limit ? i18n(cfg.locale).pages.rss.lastFewNotes({ count: limit }) : i18n(cfg.locale).pages.rss.recentNotes} on ${escapeHTML(
-        cfg.pageTitle,
+        pageTitleText(cfg.pageTitle),
       )}</description>
       <generator>Quartz -- quartz.jzhao.xyz</generator>
       ${items}

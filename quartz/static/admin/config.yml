@@ -30,3 +30,11 @@ collections:
         fields:
           - {label: "Passphrase", name: "passphrase", widget: "string"}
           - {label: "Hint", name: "hint", widget: "string"}
+      - name: "site-title"
+        label: "Blog Title"
+        file: "site-title.yml"
+        fields:
+          - {label: "Title Type", name: "titleType", widget: "select", options: ["text", "image"], default: "text"}
+          - {label: "Title Text", name: "titleText", widget: "string", required: false, hint: "Shown when Title Type is Text"}
+          - {label: "Title Image", name: "titleImage", widget: "image", required: false, hint: "Shown when Title Type is Image — use a horizontal/rectangular logo, e.g. ~400x100px"}
+          - {label: "Title Image Alt Text", name: "titleImageAlt", widget: "string", required: false, hint: "Accessible description of the image, also used as the site name in tab titles, RSS, and link previews"}

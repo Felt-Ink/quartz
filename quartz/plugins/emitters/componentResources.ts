@@ -1,4 +1,5 @@
 import { FullSlug, joinSegments } from "../../util/path"
+import { pageTitleText } from "../../cfg"
 import { QuartzEmitterPlugin } from "../types"
 
 // @ts-ignore
@@ -284,7 +285,7 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
         googleFontsStyleSheet = await response.text()
 
         if (theme.typography.title) {
-          const title = ctx.cfg.configuration.pageTitle
+          const title = pageTitleText(ctx.cfg.configuration.pageTitle)
           const response = await fetch(googleFontSubsetHref(theme, title))
           googleFontsStyleSheet += `\n${await response.text()}`
         }
