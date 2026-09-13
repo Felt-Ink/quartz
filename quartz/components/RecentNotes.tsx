@@ -21,7 +21,7 @@ const defaultOptions = (cfg: GlobalConfiguration): Options => ({
   limit: 3,
   linkToMore: false,
   showTags: false,
-  filter: () => true,
+  filter: (f) => f.slug !== "index",
   sort: byDateAndAlphabetical(cfg),
 })
 
