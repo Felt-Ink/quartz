@@ -27,10 +27,13 @@ PageTitle.css = `
 }
 .page-title-image {
   display: block;
-  height: 2.25rem;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  min-height: 2rem;
+  max-height: 4rem;
+  object-fit: cover;
+  object-position: left center;
+  border-radius: 4px;
 }
 `
 
