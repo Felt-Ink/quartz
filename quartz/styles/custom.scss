@@ -1,3 +1,24 @@
 @use "./base.scss";
 
 // put your custom CSS here!
+
+.post-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-bottom: 30px;
+
+  img {
+    margin-bottom: 13px;
+  }
+
+  span {
+    opacity: 0.5;
+  }
+}
+
+img {
+  border: 0.5px solid #e4e4e4;
+}

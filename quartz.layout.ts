@@ -23,7 +23,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ArticleTitle(),
     Component.ContentMeta(),
-    Component.TagList(),
+    Component.MobileOnly(Component.TagList()),
   ],
   left: [
     Component.PageTitle(),
@@ -38,11 +38,12 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.DesktopOnly(Component.RecentNotes()),
   ],
   right: [
-    Component.Graph(),
+    Component.DesktopOnly(Component.TagList()),
     Component.DesktopOnly(Component.TableOfContents()),
+    Component.MobileOnly(Component.RecentNotes()),
     Component.Backlinks(),
   ],
 }
